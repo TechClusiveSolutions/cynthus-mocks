@@ -1,0 +1,82 @@
+version: '3.9'
+
+services:
+  analysis:
+    hostname: analysis-mock
+    container_name: cynthus-analysis-mock
+    restart: unless-stopped
+    image: cynthus/analysis-mock:latest
+    build:
+      context: ./containers/analysis
+    environment:
+      - TZ=America/Chicago
+    volumes:
+    expose:
+      - 8000/tcp
+    networks:
+      - net
+      - vnet_mocks
+    logging:
+      driver: json-file
+
+  auth:
+    hostname: auth-mock
+    container_name: cynthus-auth-mock
+    restart: unless-stopped
+    image: cynthus/auth-mock:latest
+    build:
+      context: ./containers/auth
+    environment:
+      - TZ=America/Chicago
+    volumes:
+    expose:
+      - 8000/tcp
+    networks:
+      - net
+      - vnet_mocks
+    logging:
+      driver: json-file
+
+  chat:
+    hostname: chat-mock
+    container_name: cynthus-chat-mock
+    restart: unless-stopped
+    image: cynthus/chat-mock:latest
+    build:
+      context: ./containers/chat
+    environment:
+      - TZ=America/Chicago
+    volumes:
+    expose:
+      - 8000/tcp
+    networks:
+      - net
+      - vnet_mocks
+    logging:
+      driver: json-file
+
+  portal:
+    hostname: portal-mock
+    container_name: cynthus-portal-mock
+    restart: unless-stopped
+    image: cynthus/portal-mock:latest
+    build:
+      context: ./containers/portal
+    environment:
+      - TZ=America/Chicago
+    volumes:
+    expose:
+      - 8000/tcp
+    networks:
+      - net
+      - vnet_mocks
+    logging:
+      driver: json-file
+
+networks:
+  net:
+    external: true
+    name: cynthus_net
+  vnet_mocks:
+    internal: true
+    name: cynthus_vnet_mocks
