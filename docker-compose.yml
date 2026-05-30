@@ -9,13 +9,18 @@ services:
     build:
       context: ./containers/analysis
     environment:
-      - TZ=America/Chicago
+      - TZ=${TIME_ZONE}
+      - PYTHONPATH=/opt/app/shared/src:/opt/app/src
     volumes:
+      - './configs:/opt/app/configs'
+      - './containers/analysis/bin:/opt/app/bin'
+      - './containers/analysis/src:/opt/app/src'
+      - './containers/analysis/test:/opt/app/test'
     expose:
-      - 8000/tcp
+      - ${API_PORT}/tcp
     networks:
       - net
-      - vnet_mocks
+      - vnet
     logging:
       driver: json-file
 
@@ -27,13 +32,18 @@ services:
     build:
       context: ./containers/auth
     environment:
-      - TZ=America/Chicago
+      - TZ=${TIME_ZONE}
+      - PYTHONPATH=/opt/app/shared/src:/opt/app/src
     volumes:
+      - './configs:/opt/app/configs'
+      - './containers/auth/bin:/opt/app/bin'
+      - './containers/auth/src:/opt/app/src'
+      - './containers/analysis/test:/opt/app/test'
     expose:
-      - 8000/tcp
+      - ${API_PORT}/tcp
     networks:
       - net
-      - vnet_mocks
+      - vnet
     logging:
       driver: json-file
 
@@ -45,13 +55,18 @@ services:
     build:
       context: ./containers/chat
     environment:
-      - TZ=America/Chicago
+      - TZ=${TIME_ZONE}
+      - PYTHONPATH=/opt/app/shared/src:/opt/app/src
     volumes:
+      - './configs:/opt/app/configs'
+      - './containers/chat/bin:/opt/app/bin'
+      - './containers/chat/src:/opt/app/src'
+      - './containers/chat/test:/opt/app/test'
     expose:
-      - 8000/tcp
+      - ${WEB_PORT}/tcp
     networks:
       - net
-      - vnet_mocks
+      - vnet
     logging:
       driver: json-file
 
@@ -63,13 +78,18 @@ services:
     build:
       context: ./containers/portal
     environment:
-      - TZ=America/Chicago
+      - TZ=${TIME_ZONE}
+      - PYTHONPATH=/opt/app/shared/src:/opt/app/src
     volumes:
+      - './configs:/opt/app/configs'
+      - './containers/portal/bin:/opt/app/bin'
+      - './containers/portal/src:/opt/app/src'
+      - './containers/portal/test:/opt/app/test'
     expose:
-      - 8000/tcp
+      - ${WEB_PORT}/tcp
     networks:
       - net
-      - vnet_mocks
+      - vnet
     logging:
       driver: json-file
 
@@ -77,6 +97,9 @@ networks:
   net:
     external: true
     name: cynthus_net
-  vnet_mocks:
+  vnet:
     internal: true
     name: cynthus_vnet_mocks
+    ipam:
+      config:
+        - subnet: ${CYNTHUS_MOCK_VNET_SUBNET}
