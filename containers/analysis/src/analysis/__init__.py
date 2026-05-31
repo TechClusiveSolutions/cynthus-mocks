@@ -1,4 +1,4 @@
-"""Analysis initialization script for the Vesta project"""
+"""Analysis initialization script for the Cynthus project"""
 
 import logging
 
