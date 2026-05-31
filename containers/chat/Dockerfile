@@ -1,4 +1,7 @@
-FROM ghcr.io/techclusivesolutions/cynthus-base:main
+FROM debian:bookworm-slim
+
+LABEL maintainer="Jad Wauthier"
+LABEL type="base-image"
 
 USER root
 
@@ -6,11 +9,16 @@ WORKDIR /opt/app
 
 RUN apt-get update
 RUN apt-get upgrade -y
+RUN apt-get install -y python3 python3-pip python3-venv curl libidn2-dev libxml2-dev libpq-dev libssl-dev
 
 COPY requirements.txt requirements.txt
 
-run /opt/python/bin/python3 -m pip install -r requirements.txt
+RUN mkdir -p /opt/python
 
-EXPOSE 8000/tcp
+RUN python3 -m venv /opt/python
+
+RUN /opt/python/bin/python3 -m pip install -r requirements.txt
+
+EXPOSE 80/tcp
 
 CMD [ "/opt/app/bin/startup.sh" ]

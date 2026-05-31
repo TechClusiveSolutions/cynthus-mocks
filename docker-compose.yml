@@ -2,94 +2,147 @@ version: '3.9'
 
 services:
   analysis:
-    hostname: analysis-mock
-    container_name: cynthus-analysis-mock
+    hostname: mock-analysis
+    container_name: cynthus-mock-analysis
     restart: unless-stopped
-    image: cynthus/analysis-mock:latest
+    image: cynthus/mock-analysis:latest
     build:
       context: ./containers/analysis
     environment:
-      - TZ=${TIME_ZONE}
-      - PYTHONPATH=/opt/app/shared/src:/opt/app/src
+      - 'TZ=${TIME_ZONE}'
+      - 'PYTHONPATH=/opt/app/shared/src:/opt/app/src'
+      - 'PYTHONUNBUFFERED=1'
     volumes:
-      - './configs:/opt/app/configs'
       - './containers/analysis/bin:/opt/app/bin'
       - './containers/analysis/src:/opt/app/src'
       - './containers/analysis/test:/opt/app/test'
     expose:
-      - ${API_PORT}/tcp
+      - '${API_PORT}/tcp'
     networks:
       - net
       - vnet
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:${API_PORT}/" ]
+      start_period: 30s
+      interval: 20s
+      timeout: 5s
+      retries: 5
     logging:
       driver: json-file
 
   auth:
-    hostname: auth-mock
-    container_name: cynthus-auth-mock
+    hostname: mock-auth
+    container_name: cynthus-mock-auth
     restart: unless-stopped
-    image: cynthus/auth-mock:latest
+    image: cynthus/mock-auth:latest
     build:
       context: ./containers/auth
     environment:
-      - TZ=${TIME_ZONE}
-      - PYTHONPATH=/opt/app/shared/src:/opt/app/src
+      - 'TZ=${TIME_ZONE}'
+      - 'PYTHONPATH=/opt/app/shared/src:/opt/app/src'
+      - 'PYTHONUNBUFFERED=1'
     volumes:
-      - './configs:/opt/app/configs'
       - './containers/auth/bin:/opt/app/bin'
       - './containers/auth/src:/opt/app/src'
-      - './containers/analysis/test:/opt/app/test'
+      - './containers/auth/test:/opt/app/test'
     expose:
-      - ${API_PORT}/tcp
+      - '${API_PORT}/tcp'
     networks:
       - net
       - vnet
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:${API_PORT}/" ]
+      start_period: 30s
+      interval: 20s
+      timeout: 5s
+      retries: 5
     logging:
       driver: json-file
 
   chat:
-    hostname: chat-mock
-    container_name: cynthus-chat-mock
+    hostname: mock-chat
+    container_name: cynthus-mock-chat
     restart: unless-stopped
-    image: cynthus/chat-mock:latest
+    image: cynthus/mock-chat:latest
     build:
       context: ./containers/chat
     environment:
-      - TZ=${TIME_ZONE}
-      - PYTHONPATH=/opt/app/shared/src:/opt/app/src
+      - 'TZ=${TIME_ZONE}'
+      - 'PYTHONPATH=/opt/app/shared/src:/opt/app/src'
+      - 'PYTHONUNBUFFERED=1'
     volumes:
-      - './configs:/opt/app/configs'
       - './containers/chat/bin:/opt/app/bin'
       - './containers/chat/src:/opt/app/src'
       - './containers/chat/test:/opt/app/test'
     expose:
-      - ${WEB_PORT}/tcp
+      - '${WEB_PORT}/tcp'
     networks:
       - net
       - vnet
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:${WEB_PORT}/" ]
+      start_period: 30s
+      interval: 20s
+      timeout: 5s
+      retries: 5
     logging:
       driver: json-file
 
-  portal:
-    hostname: portal-mock
-    container_name: cynthus-portal-mock
+  portal-api
+    hostname: mock-portal-api
+    container_name: cynthus-mock-portal-api
     restart: unless-stopped
-    image: cynthus/portal-mock:latest
+    image: cynthus/mock-portal-api:latest
     build:
-      context: ./containers/portal
+      context: ./containers/portal-api
     environment:
-      - TZ=${TIME_ZONE}
-      - PYTHONPATH=/opt/app/shared/src:/opt/app/src
+      - 'TZ=${TIME_ZONE}'
+      - 'PYTHONPATH=/opt/app/shared/src:/opt/app/src'
+      - 'PYTHONUNBUFFERED=1'
     volumes:
-      - './configs:/opt/app/configs'
-      - './containers/portal/bin:/opt/app/bin'
-      - './containers/portal/src:/opt/app/src'
-      - './containers/portal/test:/opt/app/test'
+      - './containers/portal-api/bin:/opt/app/bin'
+      - './containers/portal-api/src:/opt/app/src'
+      - './containers/portal-api/test:/opt/app/test'
     expose:
-      - ${WEB_PORT}/tcp
+      - '${API_PORT}/tcp'
     networks:
       - net
       - vnet
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:${API_PORT}/" ]
+      start_period: 30s
+      interval: 20s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: json-file
+
+  portal-web:
+    hostname: mock-portal-web
+    container_name: cynthus-mock-portal-web
+    restart: unless-stopped
+    image: cynthus/mock-portal-web:latest
+    build:
+      context: ./containers/portal-web
+    environment:
+      - 'TZ=${TIME_ZONE}'
+      - 'PYTHONPATH=/opt/app/shared/src:/opt/app/src'
+      - 'PYTHONUNBUFFERED=1'
+    volumes:
+      - './containers/portal-web/bin:/opt/app/bin'
+      - './containers/portal-web/src:/opt/app/src'
+      - './containers/portal-web/test:/opt/app/test'
+    expose:
+      - '${WEB_PORT}/tcp'
+    networks:
+      - net
+      - vnet
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:${WEB_PORT}/" ]
+      start_period: 30s
+      interval: 20s
+      timeout: 5s
+      retries: 5
     logging:
       driver: json-file
 
@@ -99,7 +152,7 @@ networks:
     name: cynthus_net
   vnet:
     internal: true
-    name: cynthus_vnet_mocks
+    name: cynthus_mock_vnet
     ipam:
       config:
         - subnet: ${CYNTHUS_MOCK_VNET_SUBNET}
