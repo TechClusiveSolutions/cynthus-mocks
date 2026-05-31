@@ -88,7 +88,7 @@ services:
     logging:
       driver: json-file
 
-  portal-api
+  portal-api:
     hostname: mock-portal-api
     container_name: cynthus-mock-portal-api
     restart: unless-stopped
