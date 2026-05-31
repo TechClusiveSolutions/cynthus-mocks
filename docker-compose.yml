@@ -12,6 +12,7 @@ services:
       - 'TZ=${TIME_ZONE}'
       - 'PYTHONPATH=/opt/app/shared/src:/opt/app/src'
       - 'PYTHONUNBUFFERED=1'
+      - 'PORT=${API_PORT}'
     volumes:
       - './containers/analysis/bin:/opt/app/bin'
       - './containers/analysis/src:/opt/app/src'
@@ -20,7 +21,6 @@ services:
       - '${API_PORT}/tcp'
     networks:
       - net
-      - vnet
     healthcheck:
       test: [ "CMD", "curl", "http://localhost:${API_PORT}/" ]
       start_period: 30s
@@ -41,6 +41,7 @@ services:
       - 'TZ=${TIME_ZONE}'
       - 'PYTHONPATH=/opt/app/shared/src:/opt/app/src'
       - 'PYTHONUNBUFFERED=1'
+      - 'PORT=${API_PORT}'
     volumes:
       - './containers/auth/bin:/opt/app/bin'
       - './containers/auth/src:/opt/app/src'
@@ -49,7 +50,6 @@ services:
       - '${API_PORT}/tcp'
     networks:
       - net
-      - vnet
     healthcheck:
       test: [ "CMD", "curl", "http://localhost:${API_PORT}/" ]
       start_period: 30s
@@ -70,6 +70,7 @@ services:
       - 'TZ=${TIME_ZONE}'
       - 'PYTHONPATH=/opt/app/shared/src:/opt/app/src'
       - 'PYTHONUNBUFFERED=1'
+      - 'PORT=${WEB_PORT}'
     volumes:
       - './containers/chat/bin:/opt/app/bin'
       - './containers/chat/src:/opt/app/src'
@@ -78,7 +79,6 @@ services:
       - '${WEB_PORT}/tcp'
     networks:
       - net
-      - vnet
     healthcheck:
       test: [ "CMD", "curl", "http://localhost:${WEB_PORT}/" ]
       start_period: 30s
@@ -99,6 +99,7 @@ services:
       - 'TZ=${TIME_ZONE}'
       - 'PYTHONPATH=/opt/app/shared/src:/opt/app/src'
       - 'PYTHONUNBUFFERED=1'
+      - 'PORT=${API_PORT}'
     volumes:
       - './containers/portal-api/bin:/opt/app/bin'
       - './containers/portal-api/src:/opt/app/src'
@@ -107,7 +108,6 @@ services:
       - '${API_PORT}/tcp'
     networks:
       - net
-      - vnet
     healthcheck:
       test: [ "CMD", "curl", "http://localhost:${API_PORT}/" ]
       start_period: 30s
@@ -128,6 +128,7 @@ services:
       - 'TZ=${TIME_ZONE}'
       - 'PYTHONPATH=/opt/app/shared/src:/opt/app/src'
       - 'PYTHONUNBUFFERED=1'
+      - 'PORT=${WEB_PORT}'
     volumes:
       - './containers/portal-web/bin:/opt/app/bin'
       - './containers/portal-web/src:/opt/app/src'
@@ -136,7 +137,6 @@ services:
       - '${WEB_PORT}/tcp'
     networks:
       - net
-      - vnet
     healthcheck:
       test: [ "CMD", "curl", "http://localhost:${WEB_PORT}/" ]
       start_period: 30s
@@ -150,9 +150,3 @@ networks:
   net:
     external: true
     name: cynthus_net
-  vnet:
-    internal: true
-    name: cynthus_mock_vnet
-    ipam:
-      config:
-        - subnet: ${CYNTHUS_MOCK_VNET_SUBNET}
