@@ -2,3 +2,9 @@ __pycache__
 
 .env
 *.json
+
+__pycache__/
+.pytest_cache/
+.coverage
+.venv/
+.deps/

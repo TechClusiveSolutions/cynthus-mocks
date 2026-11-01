@@ -1,9 +1,7 @@
 """System routes controller for the Cynthus project"""
 
-import logging
 
 from fastapi import APIRouter
-
 
 system = APIRouter()
 
