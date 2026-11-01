@@ -9,7 +9,6 @@ import importlib
 
 import pytest
 
-
 MODULES = [
     'auth',
     'auth.routes',

@@ -1,9 +1,7 @@
 """Chat System routes for the Cynthus project"""
 
-import logging
 
 from fastapi import APIRouter
-
 
 system = APIRouter()
 

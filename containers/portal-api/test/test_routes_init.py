@@ -5,7 +5,6 @@
 import importlib
 
 import pytest
-
 from fastapi import APIRouter
 
 
