@@ -10,6 +10,10 @@ version and date.
 
 ## [Unreleased]
 
+- Nothing yet.
+
+## [0.1.0] - 2026-11-01
+
 - Adopt the Cynthus CI, lint and pull-request workflow (#1) (#2)
 - Add unit tests for the mock services
 - Fix startup script for the chat service
@@ -22,6 +26,3 @@ version and date.
 - Fix service definitions in docker compose config
 - Add Dockerfile and startup script for the analysis, auth, chat, and portal services
 - Initial commit
-
-<!-- No tagged releases exist yet. The entries above are the commits merged to `dev`,
-newest first, as a backfill. The first tag is cut with the ecosystem 1.0 release set. -->
