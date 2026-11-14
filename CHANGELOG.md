@@ -10,6 +10,7 @@ version and date.
 
 ## [Unreleased]
 
+- Unix line endings (issue 13): `.gitattributes` (`* text=auto eol=lf`), `.editorconfig`, every text file committed with LF, and a CI check (`.github/scripts/check_line_endings.py`) that rejects CRLF.
 - README follows the standard quick-start structure (issue 7; cynthus#57): Description, Prerequisites, Installation, Minimal configuration, Gotchas, More documentation. `check_markdown.py` now checks the README headings.
 - Documentation for screen readers (issue 5): Markdown is ASCII only, has no tables (lists instead), names the language of every code block, and `README.md` has the standard name. `.github/scripts/check_markdown.py` now enforces this, and checks that relative links resolve, in the `docs-lint` job; markdownlint covers every Markdown file.
 
